@@ -1,0 +1,5 @@
+*.h5ad
+*.h5
+*.out
+outputs/
+results/
