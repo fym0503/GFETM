@@ -8,5 +8,7 @@ setup(
     version="0.1" + "." + BUILD_ID,
     # Author details
     author="Yimin Fan",
+    packages=find_packages(),
     author_email="fanyimin@link.cuhk.edu.hk",
 )
+
