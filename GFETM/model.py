@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F 
 import numpy as np 
 from pathlib import Path
-from gensim.models.fasttext import FastText as FT_gensim
 from GFETM.utils import nearest_neighbors, get_topic_coherence, get_topic_diversity
 from sklearn.metrics import f1_score
 from sklearn.preprocessing import normalize
