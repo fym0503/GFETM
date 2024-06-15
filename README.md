@@ -14,4 +14,4 @@ We provided a tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tut
 
 Please download the dataset respective following instructions in [data](https://github.com/fym0503/GFETM/tree/main/data) and [gfm_checkpoint](https://github.com/fym0503/GFETM/tree/main/gfm_checkpoint)/ before running the tutorial.
 ## Contact
-This paper is still under review and we are actively cleaning up the code. If you have any questions about the code, feel free to propose an issue or email at fanyimin.fym@link.cuhk.edu.hk
+This paper is still under review. If you have any questions about the code, feel free to propose an issue or email at fanyimin.fym@link.cuhk.edu.hk
