@@ -10,6 +10,7 @@ pip install -r requirements.txt
 pip install -e .
 ```
 ## Usage
-We provided a tutorial at 
+We provided a tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tutorial.ipynb
+Please download the dataset respective following instructions in data/ and gfm_checkpoint/ before running the tutorial.
 ## Contact
 This paper is still under review and we are actively cleaning up the code. If you have any questions about the code, feel free to propose an issue or email at fanyimin.fym@link.cuhk.edu.hk
