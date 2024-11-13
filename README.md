@@ -1,5 +1,6 @@
 # GFETM
 GFETM: Genome Foundation-based Embedded Topic Model for scATAC-seq Modeling
+[framework (2).pdf](https://github.com/user-attachments/files/17728685/framework.2.pdf)
 
 ## Installation
 ```
