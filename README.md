@@ -16,7 +16,7 @@ pip install -e .
 ## Usage Steps
 0. Environment Preparation (see above)
 1. Download the dataset respective following instructions in [data](https://github.com/fym0503/GFETM/tree/main/data) and [gfm_checkpoint](https://github.com/fym0503/GFETM/tree/main/gfm_checkpoint)
-2. We provided a minimal tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tutorial.ipynb
+2. We provided a minimal tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tutorial_minimal.ipynb
 3. We provided some scripts for replicating figures in our study at https://github.com/fym0503/GFETM/blob/main/scripts/
 
 ## Contact
