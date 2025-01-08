@@ -1,5 +1,4 @@
-# GFETM
-**GFETM: Genome Foundation-based Embedded Topic Model for scATAC-seq Modeling**
+# GFETM: Genome Foundation-based Embedded Topic Model for scATAC-seq Modeling**
 
 Preprint Link: https://www.biorxiv.org/content/10.1101/2023.11.09.566403v1.full.pdf
 
