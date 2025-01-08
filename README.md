@@ -4,8 +4,8 @@
 Preprint Link: https://www.biorxiv.org/content/10.1101/2023.11.09.566403v1.full.pdf
 
 RECOMB 2024 Conference version: https://dl.acm.org/doi/10.1007/978-1-0716-3989-4_20
-![framework (4).pdf](https://github.com/user-attachments/files/18342924/framework.4.pdf)
 
+![framework_gfetm](https://github.com/user-attachments/assets/6e090921-21d0-4089-a6fc-7b8db5fa14a2)
 
 ## Installation
 ```
