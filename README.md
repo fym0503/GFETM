@@ -20,10 +20,10 @@ pip install -e .
 We provided a sample dataset in Google Drive as instructed in [data](https://github.com/fym0503/GFETM/tree/main/data). To pre-process your own datasets, please follow the instructions in https://github.com/fym0503/GFETM/blob/main/scripts/general/data_preprocess.ipynb. To proceed with the preprocessing, please make sure your dataset has a .h5ad format with .var['chr','start','end'] indicating the chromosomes, start position and end positin of the peak coordinates.
 
 ## Tutorials
-We provided a minimal tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tutorial_minimal.ipynb
+We provided a tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tutorial_minimal.ipynb to perform experiments on the human HSC dataset.
 
 ## Reproducibility
-We provided some scripts for replicating figures in our study at https://github.com/fym0503/GFETM/blob/main/scripts/
+We provided some scripts for replicating figures in our study at https://github.com/fym0503/GFETM/blob/main/scripts/.
 
 ## Contact
 The full paper is still under review. If you have any questions about the code, feel free to propose an issue or email at fanyimin.fym@link.cuhk.edu.hk
