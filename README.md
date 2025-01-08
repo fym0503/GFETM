@@ -7,7 +7,7 @@ RECOMB 2024 Conference version: https://dl.acm.org/doi/10.1007/978-1-0716-3989-4
 
 ![framework_gfetm](https://github.com/user-attachments/assets/6e090921-21d0-4089-a6fc-7b8db5fa14a2)
 
-## Installation
+## Environment Configuration and Installation
 ```
 git clone https://github.com/fym0503/GFETM.git
 cd GFETM
@@ -15,6 +15,10 @@ conda create -n GFETM_env python=3.8.10
 pip install -r requirements.txt
 pip install -e .
 ```
+
+## Dataset Preparation
+We provided a sample dataset in Google Drive as instructed in [data](https://github.com/fym0503/GFETM/tree/main/data). To pre-process your own datasets, please follow the instructions in https://github.com/fym0503/GFETM/blob/main/scripts/general/data_preprocess.ipynb. To proceed with the preprocessing, please make sure your dataset has a .h5ad format with .var['chr','start','end'] indicating the chromosomes, start position and end positin of the peak coordinates.
+
 ## Usage Steps
 0. Environment Preparation (see above)
 1. Download the dataset respective following instructions in [data](https://github.com/fym0503/GFETM/tree/main/data) and [gfm_checkpoint](https://github.com/fym0503/GFETM/tree/main/gfm_checkpoint)
