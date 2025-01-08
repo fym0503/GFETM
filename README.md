@@ -25,4 +25,4 @@ We provided a tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tut
 We provided some scripts for replicating figures in our study at https://github.com/fym0503/GFETM/blob/main/reproducibility/.
 
 ## Contact
-The full paper is still under review. If you have any questions about the code, feel free to propose an issue or email at fanyimin.fym@link.cuhk.edu.hk
+The full paper is still under review. If you have any questions about the code, feel free to propose an issue or email at fanyimin@link.cuhk.edu.hk
