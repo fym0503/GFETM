@@ -19,11 +19,11 @@ pip install -e .
 ## Dataset Preparation
 We provided a sample dataset in Google Drive as instructed in [data](https://github.com/fym0503/GFETM/tree/main/data). To pre-process your own datasets, please follow the instructions in https://github.com/fym0503/GFETM/blob/main/scripts/general/data_preprocess.ipynb. To proceed with the preprocessing, please make sure your dataset has a .h5ad format with .var['chr','start','end'] indicating the chromosomes, start position and end positin of the peak coordinates.
 
-## Usage Steps
-0. Environment Preparation (see above)
-1. Download the dataset respective following instructions in [data](https://github.com/fym0503/GFETM/tree/main/data) and [gfm_checkpoint](https://github.com/fym0503/GFETM/tree/main/gfm_checkpoint)
-2. We provided a minimal tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tutorial_minimal.ipynb
-3. We provided some scripts for replicating figures in our study at https://github.com/fym0503/GFETM/blob/main/scripts/
+## Tutorials
+We provided a minimal tutorial at https://github.com/fym0503/GFETM/blob/main/scripts/tutorial_minimal.ipynb
+
+## Reproducibility
+We provided some scripts for replicating figures in our study at https://github.com/fym0503/GFETM/blob/main/scripts/
 
 ## Contact
 The full paper is still under review. If you have any questions about the code, feel free to propose an issue or email at fanyimin.fym@link.cuhk.edu.hk
