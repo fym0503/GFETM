@@ -12,7 +12,7 @@ import torch.distributions as dist
 
 class SCATAC_ETM(nn.Module):
     def __init__(self, num_topics, vocab_size, t_hidden_size, rho_size, emsize, 
-                    theta_act, embeddings=None, load_embeddings=True, fix_embeddings=True, enc_drop=0.5, batch_correction=False, cell_num = 2034,n_batches=6,checkpoint_path="dnabert"):
+                    theta_act, embeddings=None, load_embeddings=True, fix_embeddings=True, enc_drop=0.5, batch_correction=True, cell_num = 2034, n_batches=2,checkpoint_path="dnabert"):
         super(SCATAC_ETM, self).__init__()
 
         self.num_topics = num_topics
@@ -29,7 +29,8 @@ class SCATAC_ETM(nn.Module):
         self.alphas = nn.Linear(rho_size, num_topics, bias=False)
         config = AutoConfig.from_pretrained(checkpoint_path)
         self.peak_encoder = AutoModel.from_pretrained(checkpoint_path, config=config).to(device)
-
+        if batch_correction:
+            self.bc = nn.Parameter(torch.randn(n_batches, vocab_size))
         for p in self.peak_encoder.named_parameters():
             if "11" in p[0] or "10" in [0]:
                 continue
@@ -122,13 +123,14 @@ class SCATAC_ETM(nn.Module):
             [type]: [description]
         """
         res = torch.mm(theta,beta.T)
-
+        if self.batch_correction: #and self.epoch > 500:
+            res += self.bc[batch_indices]
         almost_zeros = torch.full_like(res, 1e-30)
         results_without_zeros = res.add(almost_zeros)
         predictions = torch.log(F.softmax(results_without_zeros,dim=-1)+ 1e-30)
         return predictions
 
-    def forward_joint(self, bows, normalized_bows, peak_feature, theta=None, aggregate=True):
+    def forward_joint(self, bows, normalized_bows, peak_feature, batch_indices=None,select_peaks=None, theta=None, aggregate=True):
 
         if theta is None:
             theta, kld_theta = self.get_theta(bows)
@@ -140,7 +142,10 @@ class SCATAC_ETM(nn.Module):
         peak_embeds = self.encode_peak(peak_feature)
         temp2 = self.alphas(peak_embeds)
         preds = torch.mm(theta, temp2.T)
-
+        
+        if self.batch_correction: #and self.epoch > 500:
+            preds += self.bc[batch_indices][:,select_peaks]
+            
         output = torch.log(F.softmax(preds)+1e-30)
         loss_cell = -(output * normalized_bows).sum()
 
@@ -177,62 +182,9 @@ class SCATAC_ETM(nn.Module):
         self.cell_optimizer = cell_optimizer
         self.peak_optimizer = peak_optimizer
         return cell_optimizer, peak_optimizer
-    def evaluate(self,epoch,args,valid_set):
-        self.eval()
-        acc_loss = 0
-        acc_kl_theta_loss = 0
-        cnt = 0
-        
-        for step, data_batch in enumerate(valid_set):
-            
-            w = 0.000001
-            if epoch < 50000:
-                w = (epoch / 50000) * 0.000001
-            else:
-                w = 0.000001
-            normalized_data_batch = data_batch
-        
-            recon_loss, kld_theta = self.forward(data_batch[0].to(device), normalized_data_batch[0].to(device), data_batch[1].to(device))
-            total_loss = recon_loss +  w * kld_theta 
 
-            acc_loss += torch.sum(recon_loss).item()
-            acc_kl_theta_loss += torch.sum(kld_theta).item()
-            cnt = cnt + 1
-            if step % args.log_interval == 0 and step > 0:
-                cur_loss = round(acc_loss / cnt, 2) 
-                cur_kl_theta = round(acc_kl_theta_loss / cnt, 2) 
-                cur_real_loss = round(cur_loss + cur_kl_theta, 2)
-                print('Epoch Evaluate: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
-                    epoch, step, len(valid_set), self.optimizer.param_groups[0]['lr'], cur_kl_theta, cur_loss, cur_real_loss))
-        return acc_loss
-    def validate(self, epoch, args, validate_set_cell, validate_set_peak, peak_feature):
-        self.eval()
-        acc_loss = 0
-        acc_kl_theta_loss = 0
-        cnt = 0
-        preds = []
-        labels = []
-        acc_loss_cell = 0
-        acc_loss_peak = 0
-        acc_loss = 0
-        self.epoch = epoch
-    
-        with torch.no_grad():
-            self.update=0
-            for step, data_batch in enumerate(validate_set_cell):
+   
 
-                output_normalized_data_batch = data_batch[0]
-                recon_loss, kld_theta  = self.forward_joint_inference(data_batch[0].to(device), output_normalized_data_batch.to(device), peak_feature)
-                acc_loss += torch.sum(recon_loss).item()
-                self.update=1
-            print('*'*100)
-            print('Epoch----->Valid step {} ..  Rec_loss: {}  .. Cell loss:{} .. Peak Loss: {}'.format(
-                    epoch,  acc_loss, acc_loss_cell, acc_loss_peak))
-            print('*'*100)
-            
-        
-        
-        return acc_loss
     def train_for_epoch(self, epoch, args, training_set_cell, peak_feature):
         self.train()
         acc_loss = 0
@@ -246,15 +198,17 @@ class SCATAC_ETM(nn.Module):
         
         if True:
             for step, data_batch in enumerate(training_set_cell):
-                select_peaks = torch.randint(0,peak_feature.shape[0], (384,))
-
+                select_peaks = torch.randint(0,peak_feature.shape[0], (256,))
                 peak_input = peak_feature[select_peaks]
 
                 selected_data = data_batch[0][:,select_peaks] 
                 selected_data = selected_data / (torch.sum(selected_data,dim=0) + 1e-7)
-                recon_loss, kld_theta, peak_embeds = self.forward_joint(data_batch[0].to(device), selected_data.to(device), peak_input)
-
-                total_loss =  recon_loss + 0.000001 * kld_theta
+                recon_loss, kld_theta, peak_embeds = self.forward_joint(data_batch[0].to(device), selected_data.to(device), peak_input, data_batch[1].to(device),select_peaks)
+                if self.batch_correction: 
+                    l2_reg = torch.norm(self.bc, p=1)  # L2 norm
+                    total_loss = recon_loss +  0.00001 * kld_theta + 50 * l2_reg
+                else:
+                    total_loss = recon_loss +  0.00001 * kld_theta
                 total_loss.backward()
                 if args.clip > 0:
                     torch.nn.utils.clip_grad_norm_(self.parameters(), args.clip)
