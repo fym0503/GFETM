@@ -11,6 +11,7 @@ RECOMB 2024 Conference version: https://dl.acm.org/doi/10.1007/978-1-0716-3989-4
 git clone https://github.com/fym0503/GFETM.git
 cd GFETM
 conda create -n GFETM_env python=3.8.10
+conda activate GFETM_env
 pip install -r requirements.txt
 pip install -e .
 ```
